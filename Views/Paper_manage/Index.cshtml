@@ -1,0 +1,75 @@
+﻿@model IEnumerable<AU_Management.Models.PaperMain>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>My Papers</h2>
+
+<p>
+    @Html.ActionLink("Create New Paper", "Create")
+
+    @using (Html.BeginForm())
+    {
+    <p>
+        @Html.DisplayNameFor(model => model.Title) :
+        @Html.TextBox("searchTitle")
+        @Html.DisplayNameFor(model => model.Source) :
+        @Html.TextBox("searchSource")
+        @Html.DisplayNameFor(model => model.Year) :
+        @Html.TextBox("searchYear")
+        @Html.DisplayNameFor(model => model.Key):
+        @Html.TextBox("searchKey")
+        <input type="submit" value="Search" />
+    </p>
+    }
+    </p>
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Source)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Year)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Key)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Discription)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Source)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Year)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Key)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Discription)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                </td>
+            </tr>
+        }
+
+    </table>
