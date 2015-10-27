@@ -53,6 +53,10 @@ namespace AU_Management.Models
         public String Discription { get; set; }
         [Required]
         public String Creater { get; set; }
+
+        public String PDF { get; set; }
+
+        public String PPT { get; set; }
     }
 
     public class ManagementDBContext : DbContext

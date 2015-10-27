@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using AU_Management.Models;
+using System.IO;
 
 namespace AU_Management.Controllers
 {
@@ -46,7 +47,6 @@ namespace AU_Management.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(PaperMain paper)
         {
-            paper.Creater = User.Identity.Name;
             var errors = ModelState.SelectMany(m => m.Value.Errors);
             if (ModelState.IsValid)
             {
@@ -55,7 +55,7 @@ namespace AU_Management.Controllers
                 {
                     db.Papers.Add(paper);
                     db.SaveChanges();
-                    return RedirectToAction("Index");
+                    return RedirectToAction("UploadFile", new { title = paper.Title});
                 }
                 else
                     ModelState.AddModelError("", "This Paper Already Exists");
@@ -80,7 +80,7 @@ namespace AU_Management.Controllers
                 paper.Creater = User.Identity.Name;
                 db.Entry(paper).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("UploadFile", new { title = paper.Title});
             }
             return View(paper);
         }
@@ -98,10 +98,63 @@ namespace AU_Management.Controllers
         public ActionResult DeleteConfirmed(int? id)
         {
             PaperMain paper = db.Papers.Find(id);
+
+            if(!String.IsNullOrEmpty(paper.PDF))
+                System.IO.File.Delete(paper.PDF);
+
             db.Papers.Remove(paper);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
         #endregion
+
+        #region UploadFile
+        public ActionResult UploadFile(String title)
+        {
+            ViewBag.temp = title;
+            return View();
+        }
+
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult UploadFile(HttpPostedFileBase upfile,PaperMain pp)
+        {
+            if(upfile!=null)
+            {
+                if(upfile.ContentLength >0)
+                {
+                    //String ss = "~/UploadFile/" + User.Identity.Name + "/";
+                    String ss = Server.MapPath("~/Upload/" + User.Identity.Name + "/");
+                    if (!Directory.Exists(ss))
+                        Directory.CreateDirectory(ss);
+                    String saveName = Path.Combine(Server.MapPath("~/Upload/" + User.Identity.Name + "/"), pp.Title + ".txt");
+                    upfile.SaveAs(saveName);
+
+                    var result = from m in db.Papers
+                                 where m.Title == pp.Title
+                                 select m;
+                    foreach (PaperMain rr in result)
+                    {
+                        rr.PDF =  Server.MapPath("~/Upload/" + User.Identity.Name + "/") + pp.Title + ".txt";
+                        db.Entry(rr).State = System.Data.Entity.EntityState.Modified;
+                    }
+                    db.SaveChanges();
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
+        #endregion
+
+        #region DownLoadFile
+        public ActionResult DownLoadPDF(int? id)
+        {
+            String filepath = db.Papers.Find(id).PDF;
+            String filename = Path.GetFileName(filepath);
+            Stream iStream = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.Read);
+            return File(iStream, "application/unknow", filename);
+        }
+        #endregion
+
     }
 }

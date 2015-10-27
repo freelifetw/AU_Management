@@ -78,3 +78,5 @@ C:\Users\tp1211002\Documents\Visual Studio 2013\Projects\AU_Management\AU_Manage
 C:\Users\tp1211002\Documents\Visual Studio 2013\Projects\AU_Management\AU_Management\obj\Debug\AU_Management.Migrations.EditCreater.resources
 C:\Users\tp1211002\Documents\Visual Studio 2013\Projects\AU_Management\AU_Management\obj\Debug\AU_Management.Migrations.EditYear1.resources
 C:\Users\tp1211002\Documents\Visual Studio 2013\Projects\AU_Management\AU_Management\obj\Debug\AU_Management.Migrations.Edit_Creater.resources
+C:\Users\tp1211002\Documents\Visual Studio 2013\Projects\AU_Management\AU_Management\obj\Debug\AU_Management.Migrations.NewEntity1.resources
+C:\Users\tp1211002\Documents\Visual Studio 2013\Projects\AU_Management\AU_Management\obj\Debug\AU_Management.Migrations.newPPT.resources

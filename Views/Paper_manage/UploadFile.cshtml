@@ -1,0 +1,17 @@
+﻿@model AU_Management.Models.PaperMain
+
+@{
+    ViewBag.Title = "UploadFile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Upload PDF File</h2>
+@using (Html.BeginForm("UploadFile", "Paper_manage", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.TextBoxFor(model => model.Title, new { @class = "hidden" })
+    <input type="file" name="upfile" />
+    @*<input type="file" name="upfile_ppt" />*@
+    <input type="submit" name="Upload" value="Upload" />
+}
+
+@Html.ActionLink("Skip This", "Index")
